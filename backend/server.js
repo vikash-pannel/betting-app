@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -13,22 +12,16 @@ app.use(express.json());
 const matchRoutes = require("./routes/match");
 
 // ✅ Routes use
-app.use("/api/match", require("./routes/match"));
+app.use("/api/matches", matchRoutes);
 
-// ✅ Test route (check server running)
+// ✅ Test route
 app.get("/", (req, res) => {
   res.send("API Running 🚀");
 });
-
-// ✅ MongoDB connect
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log("❌ DB Error:", err));
 
 // ✅ Server start
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
