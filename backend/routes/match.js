@@ -1,51 +1,26 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 
-const Match = require("../models/Match");
-const authMiddleware = require("../middleware/authMiddleware");
-const adminMiddleware = require("../middleware/adminMiddleware");
-
-// 🛠 Create Match
-router.post("/create", authMiddleware, adminMiddleware, async (req, res) => {
+// ✅ GET Live Matches (Cricket Live Line Advance)
+router.get("/live-matches", async (req, res) => {
   try {
-    const { teamA, teamB } = req.body;
+    const response = await axios.get(
+      "https://cricket-live-line-advance.p.rapidapi.com/competitionMatches",
+      {
+        headers: {
+          "X-RapidAPI-Key": "36c4538c48mshf03efb976f9f122p11bc25jsnde99b1826066",
+          "X-RapidAPI-Host": "cricket-live-line-advance.p.rapidapi.com",
+        },
+      }
+    );
 
-    const match = await Match.create({ teamA, teamB });
+    // ✅ Send API data to frontend
+    res.json(response.data);
 
-    res.json({ msg: "Match created", match });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
-  }
-});
-
-// 🔴 Make Live
-router.put("/live/:id", authMiddleware, adminMiddleware, async (req, res) => {
-  try {
-    const match = await Match.findById(req.params.id);
-
-    match.status = "live";
-    await match.save();
-
-    res.json({ msg: "Match is LIVE", match });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
-  }
-});
-
-// 🏁 End Match + Result
-router.put("/result/:id", authMiddleware, adminMiddleware, async (req, res) => {
-  try {
-    const { result } = req.body;
-
-    const match = await Match.findById(req.params.id);
-    match.status = "finished";
-    match.result = result;
-
-    await match.save();
-
-    res.json({ msg: "Result declared", match });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
+  } catch (error) {
+    console.log("❌ ERROR:", error.message);
+    res.status(500).json({ error: "Failed to fetch matches" });
   }
 });
 
