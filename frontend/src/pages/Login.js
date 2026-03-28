@@ -21,8 +21,7 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", form);
-
+      const res = await axios.post("https://betting-backend-k4ds.onrender.com/...")
       alert("Login success");
 
       // ✅ Save token

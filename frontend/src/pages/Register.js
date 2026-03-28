@@ -15,7 +15,7 @@ function Register() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post("https://betting-backend-k4ds.onrender.com/...")
         name,
         email,
         password,
