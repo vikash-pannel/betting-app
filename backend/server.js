@@ -13,7 +13,7 @@ app.use(express.json());
 const matchRoutes = require("./routes/match");
 
 // ✅ Routes use
-app.use("/api/match", matchRoutes);
+app.use("/api/match", require("./routes/match"));
 
 // ✅ Test route (check server running)
 app.get("/", (req, res) => {

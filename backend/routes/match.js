@@ -1,30 +1,28 @@
 const express = require("express");
-const router = express.Router();
 const axios = require("axios");
 
-// ✅ GET LIVE MATCHES
+const router = express.Router();
+
+// ✅ LIVE MATCHES API
 router.get("/live-matches", async (req, res) => {
   try {
     const response = await axios.get(
-      "https://cricket-live-line1.p.rapidapi.com/liveMatches",
+      "https://cricket-live-line-advance.p.rapidapi.com/matches",
       {
         headers: {
           "X-RapidAPI-Key": "36c4538c48mshf03efb976f9f122p11bc25jsnde99b1826066",
-          "X-RapidAPI-Host": "cricket-live-line1.p.rapidapi.com",
+          "X-RapidAPI-Host": "cricket-live-line-advance.p.rapidapi.com",
         },
       }
     );
 
-    // ✅ send data
     res.json(response.data);
-
   } catch (error) {
-    console.log("❌ API ERROR:", error.response?.data || error.message);
+    console.log("API ERROR:", error.response?.data || error.message);
 
     res.status(500).json({
-      success: false,
-      message: "Failed to fetch matches",
-      error: error.response?.data || error.message,
+      error: "API failed",
+      details: error.response?.data || error.message,
     });
   }
 });
